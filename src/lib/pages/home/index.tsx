@@ -8,8 +8,8 @@ import Orders from './components/Orders';
 import TeamsTab from './components/TeamsTab';
 
 const Home = () => {
-  const [leftDrawerWidth, setLeftDrawerWidth] = useState(250);
-  const [rightDrawerWidth, setRightDrawerWidth] = useState(250);
+  const [leftDrawerWidth, setLeftDrawerWidth] = useState(300);
+  const [rightDrawerWidth, setRightDrawerWidth] = useState(300);
   const handleResizeLeftDrawer = (
     event: React.SyntheticEvent,
     { size }: { size: { width: number; height: number } }
@@ -30,7 +30,7 @@ const Home = () => {
         height={Infinity}
         resizeHandles={['e']}
         maxConstraints={[window.innerWidth * 0.4, Infinity]}
-        minConstraints={[200, Infinity]}
+        minConstraints={[300, Infinity]}
         onResize={handleResizeLeftDrawer}
       >
         <Box width={leftDrawerWidth} height="100%" bg="gray.50">
@@ -47,7 +47,7 @@ const Home = () => {
         height={Infinity}
         resizeHandles={['w']}
         maxConstraints={[window.innerWidth * 0.4, Infinity]}
-        minConstraints={[200, Infinity]}
+        minConstraints={[300, Infinity]}
         onResize={handleResizeRightDrawer}
       >
         <Box width={rightDrawerWidth} height="100vh" bg="gray.50">
