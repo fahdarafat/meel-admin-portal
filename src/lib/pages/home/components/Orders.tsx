@@ -14,7 +14,7 @@ const Orders = () => {
   const [orders, setOrders] = useState([]);
   return (
     <>
-      <Box bg="gray.50" w="100%" p={3} color="black" shadow="xs">
+      <Box w="100%" p={3} color="black" shadow="xs">
         <Text fontWeight="bold" fontSize="sm">
           Orders
         </Text>

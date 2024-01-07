@@ -1,5 +1,5 @@
 import './Header.css';
-import { Box, Flex, List, ListItem } from '@chakra-ui/react';
+import { Box, Flex, List, ListItem, Text } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 
 import ThemeToggle from './ThemeToggle';
@@ -18,10 +18,13 @@ const Header = () => {
       alignSelf="flex-start"
       justifyContent="center"
       gridGap={2}
-      bg="gray.50"
       p={2}
     >
-      <Box flex="1">Meel Admin Portal</Box>
+      <Box flex="1">
+        <Text fontSize="xl" fontWeight="bold">
+          Meel
+        </Text>
+      </Box>
       <Box flex="1" display="flex" justifyContent="center">
         <List display="flex">
           {pages.map((page) => (

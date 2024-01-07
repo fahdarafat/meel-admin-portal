@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
+
+import { AuthContext } from '~/lib/Contexts/AuthContext';
 
 type PrivateRouteProps = {
   children: React.ReactNode;
@@ -10,7 +13,9 @@ const RequireAuth = ({
   redirectTo = '/login',
 }: PrivateRouteProps) => {
   // add your own authentication logic here
-  const isAuthenticated = true;
+  const context = useContext(AuthContext);
+  const isAuthenticated = context.user;
+  console.log('RequireAuth context: ', context);
 
   return isAuthenticated ? (
     (children as React.ReactElement)

@@ -12,9 +12,9 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <Box margin="0 auto" transition="0.5s ease-out">
       <Meta />
-      <Flex wrap="wrap" minHeight="90vh">
+      <Flex wrap="wrap">
         <Header />
-        <Box width="full" as="main" marginY={22}>
+        <Box width="full" as="main">
           {children}
         </Box>
       </Flex>

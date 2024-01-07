@@ -8,6 +8,7 @@ import Orders from './components/Orders';
 import TeamsTab from './components/TeamsTab';
 
 const Home = () => {
+  const headerHeight = 56;
   const [leftDrawerWidth, setLeftDrawerWidth] = useState(300);
   const [rightDrawerWidth, setRightDrawerWidth] = useState(300);
   const handleResizeLeftDrawer = (
@@ -23,7 +24,7 @@ const Home = () => {
     setRightDrawerWidth(size.width);
   };
   return (
-    <Box display="flex" height="100vh">
+    <Box display="flex">
       {/* Left Drawer */}
       <ResizableBox
         width={leftDrawerWidth}
@@ -33,12 +34,16 @@ const Home = () => {
         minConstraints={[300, Infinity]}
         onResize={handleResizeLeftDrawer}
       >
-        <Box width={leftDrawerWidth} height="100%" bg="gray.50">
+        <Box width={leftDrawerWidth}>
           <Orders />
         </Box>
       </ResizableBox>
 
-      <Box flex="1" overflow="hidden">
+      <Box
+        flex="1"
+        overflow="hidden"
+        height={`calc(100vh - ${headerHeight}px)`}
+      >
         <Map />
       </Box>
 
@@ -50,7 +55,7 @@ const Home = () => {
         minConstraints={[300, Infinity]}
         onResize={handleResizeRightDrawer}
       >
-        <Box width={rightDrawerWidth} height="100vh" bg="gray.50">
+        <Box width={rightDrawerWidth}>
           {/* Left Drawer Content */}
           <TeamsTab />
         </Box>
