@@ -9,11 +9,11 @@ import { theme } from '~/lib/styles/theme';
 const App = () => (
   <ChakraProvider theme={theme}>
     <Router>
-      <Layout>
-        <AuthProvider>
+      <AuthProvider>
+        <Layout>
           <Routings />
-        </AuthProvider>
-      </Layout>
+        </Layout>
+      </AuthProvider>
     </Router>
   </ChakraProvider>
 );
