@@ -15,9 +15,10 @@ import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { useAuth } from '~/lib/Contexts/AuthContext';
 
 type SignupProps = {
-  email: string;
-  password: string;
-  confirmPassword: string;
+  companyName: string;
+  username: string;
+  password1: string;
+  password2: string;
 };
 const LoginPage: React.FC = () => {
   const auth = useAuth();
@@ -26,36 +27,50 @@ const LoginPage: React.FC = () => {
   const [formData, setFormData] = useReducer(
     (state: SignupProps, newState: Partial<SignupProps>) =>
       ({ ...state, ...newState }) as SignupProps,
-    { email: '', password: '', confirmPassword: '' }
+    { companyName: '', username: '', password1: '', password2: '' }
   );
-  const handleLogin = async (e: SyntheticEvent) => {
+  const handleSignup = async (e: SyntheticEvent) => {
     // Handle login logic here
     e.preventDefault();
-    auth.login(formData);
+    auth.signup({
+      client_name: formData.companyName,
+      username: formData.username,
+      password1: formData.password1,
+      password2: formData.password2,
+    });
     navigate('/');
   };
   useEffect(() => {
     if (
-      formData.password &&
-      formData.confirmPassword &&
-      formData.password !== formData.confirmPassword
+      formData.password1 &&
+      formData.password2 &&
+      formData.password1 !== formData.password2
     ) {
       setError('Passwords do not match');
     } else {
       setError('');
     }
-  }, [formData.password, formData.confirmPassword]);
+  }, [formData.password1, formData.password2]);
   return (
     <Box maxW="md" mx="auto" mt={60} p={7} shadow="lg" borderRadius="lg">
-      <form onSubmit={handleLogin}>
+      <form onSubmit={handleSignup}>
         <Stack spacing={4}>
-          <FormControl id="email">
-            <FormLabel>Email address</FormLabel>
+          <FormControl id="company-name">
+            <FormLabel>Company Name</FormLabel>
             <Input
-              type="email"
+              type="text"
               required
-              value={formData.email}
-              onChange={(e) => setFormData({ email: e.target.value })}
+              value={formData.companyName}
+              onChange={(e) => setFormData({ companyName: e.target.value })}
+            />
+          </FormControl>
+          <FormControl id="username">
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              required
+              value={formData.username}
+              onChange={(e) => setFormData({ username: e.target.value })}
             />
           </FormControl>
           <FormControl id="password">
@@ -63,8 +78,8 @@ const LoginPage: React.FC = () => {
             <Input
               type="password"
               required
-              value={formData.password}
-              onChange={(e) => setFormData({ password: e.target.value })}
+              value={formData.password1}
+              onChange={(e) => setFormData({ password1: e.target.value })}
             />
           </FormControl>
           <FormControl id="confirm-password">
@@ -72,8 +87,8 @@ const LoginPage: React.FC = () => {
             <Input
               type="password"
               required
-              value={formData.confirmPassword}
-              onChange={(e) => setFormData({ confirmPassword: e.target.value })}
+              value={formData.password2}
+              onChange={(e) => setFormData({ password2: e.target.value })}
             />
           </FormControl>
           {error && (

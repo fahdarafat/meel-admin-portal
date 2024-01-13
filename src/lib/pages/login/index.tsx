@@ -5,6 +5,7 @@ import {
   FormLabel,
   Input,
   Stack,
+  Text,
   Link as Chakralink,
 } from '@chakra-ui/react';
 import type React from 'react';
@@ -15,7 +16,8 @@ import { useNavigate, Link as ReactRouterLink } from 'react-router-dom';
 import { useAuth } from '~/lib/Contexts/AuthContext';
 
 type LoginProps = {
-  email: string;
+  companyName: string;
+  userName: string;
   password: string;
 };
 const LoginPage: React.FC = () => {
@@ -24,12 +26,18 @@ const LoginPage: React.FC = () => {
   const [formData, setFormData] = useReducer(
     (state: LoginProps, newState: Partial<LoginProps>) =>
       ({ ...state, ...newState }) as LoginProps,
-    { email: '', password: '' }
+    { companyName: '', userName: '', password: '' }
   );
   const handleLogin = async (e: SyntheticEvent) => {
     // Handle login logic here
     e.preventDefault();
-    auth.login(formData);
+    if (auth) {
+      auth.login({
+        client_name: formData.companyName,
+        username: formData.userName,
+        password: formData.password,
+      });
+    }
     navigate('/');
   };
 
@@ -37,13 +45,22 @@ const LoginPage: React.FC = () => {
     <Box maxW="md" mx="auto" mt={60} p={7} shadow="lg" borderRadius="lg">
       <form onSubmit={handleLogin}>
         <Stack spacing={4}>
-          <FormControl id="email">
-            <FormLabel>Email address</FormLabel>
+          <FormControl id="company-name">
+            <FormLabel>Company Name</FormLabel>
             <Input
-              type="email"
+              type="text"
               required
-              value={formData.email}
-              onChange={(e) => setFormData({ email: e.target.value })}
+              value={formData.companyName}
+              onChange={(e) => setFormData({ companyName: e.target.value })}
+            />
+          </FormControl>
+          <FormControl id="user-name">
+            <FormLabel>Username</FormLabel>
+            <Input
+              type="text"
+              required
+              value={formData.userName}
+              onChange={(e) => setFormData({ userName: e.target.value })}
             />
           </FormControl>
           <FormControl id="password">
@@ -59,7 +76,7 @@ const LoginPage: React.FC = () => {
             Sign In
           </Button>
           <Chakralink as={ReactRouterLink} to="/signup">
-            Don't have an account? Sign Up
+            <Text>Don&apos;t have an account? Sign Up</Text>
           </Chakralink>
         </Stack>
       </form>
