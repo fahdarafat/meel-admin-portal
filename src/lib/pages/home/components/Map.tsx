@@ -59,10 +59,10 @@ function Map({
     >
       {orders.map((order: Order) => (
         <Marker
-          key={order.id}
+          key={order.orderId}
           position={{
-            lat: +order.pickupLocation.split(',')[0] as number,
-            lng: +order.pickupLocation.split(',')[1] as number,
+            lat: +order.latitude as number,
+            lng: +order.longitude as number,
           }}
           onClick={() => {
             setActiveMarker(order);
@@ -72,8 +72,8 @@ function Map({
       {activeMarker && (
         <InfoWindow
           position={{
-            lat: +activeMarker.pickupLocation.split(',')[0] as number,
-            lng: +activeMarker.pickupLocation.split(',')[1] as number,
+            lat: +activeMarker.latitude as number,
+            lng: +activeMarker.longitude as number,
           }}
           options={{ pixelOffset: new google.maps.Size(0, -30) }}
           onCloseClick={() => {
@@ -82,15 +82,14 @@ function Map({
         >
           <Card p="0">
             <CardHeader>
-              <Heading size="md">Order {activeMarker.id}</Heading>
+              <Heading size="md">Order {activeMarker.orderId}</Heading>
             </CardHeader>
             <CardBody>
               <Text>
-                {activeMarker.pickupTime} - {activeMarker.dropoffTime}
+                {activeMarker.timestampStart} - {activeMarker.timestampEnd}
               </Text>
-              <Text>{activeMarker.pickupLocation}</Text>
-              <Text>{activeMarker.dropoffLocation}</Text>
-              <Text>{activeMarker.assignedTo}</Text>
+              <Text>{activeMarker.shortAddress}</Text>
+              <Text>{activeMarker.fullAddress}</Text>
             </CardBody>
             {/* <CardFooter>
               <Button>View here</Button>

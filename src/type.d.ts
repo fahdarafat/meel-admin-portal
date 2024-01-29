@@ -1,17 +1,11 @@
-enum OrderStatus {
-  ASSIGNED = 'ASSIGNED',
-  UNASSIGNED = 'UNASSIGNED',
-}
-
 type Order = {
-  id: number;
-  name: string;
-  status: OrderStatus;
-  assignedTo: string | null;
-  pickupLocation: string;
-  dropoffLocation: string;
-  pickupTime: string;
-  dropoffTime: string;
+  orderId: number;
+  shortAddress: string;
+  timestampStart: string;
+  timestampEnd: string;
+  fullAddress: string;
+  latitude: string;
+  longitude: string;
 };
 
 type OptimizedRoute = {

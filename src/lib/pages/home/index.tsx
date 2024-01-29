@@ -1,9 +1,12 @@
 import { Box, Flex } from '@chakra-ui/react';
 import '../../styles/resizable.css';
-import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { ResizableBox } from 'react-resizable';
 
 import type { RootState } from '../../../store/index'; // Import RootState and OptimizedRoute from the appropriate location
+import { ordersActions } from '~/store/orders';
+import useAxios from '~/utils/useAxios';
 
 import Map from './components/Map';
 import Orders from './components/Orders';
@@ -13,9 +16,16 @@ const Home = () => {
   const headerHeight = 56;
   const leftDrawerWidth = 300;
   const rightDrawerWidth = 300;
-
+  const axios = useAxios();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    axios.get('/orders/get_all_orders').then((res) => {
+      dispatch(ordersActions.setOrders(res.data));
+    });
+  }, []);
   const orders = useSelector((state: RootState) => state.orders.orders);
   const routes = useSelector((state: RootState) => state.routes.routes);
+
   return (
     <Box
       display="flex"

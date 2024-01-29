@@ -32,8 +32,11 @@ import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
 import { useRef, useState, useCallback } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
+import { useDispatch } from 'react-redux';
 
 import CustomDateTimePicker from '../../../components/DateTimePicker';
+import { ordersActions } from '~/store/orders';
+import useAxios from '~/utils/useAxios';
 
 import OrderListItem from './OrderListItem';
 
@@ -51,13 +54,13 @@ const Orders = ({ orders }: OrdersProps) => {
     id: 'google-map-script',
     googleMapsApiKey: 'AIzaSyBvdXlgBN768nlSCYCY5YaXaefhgY65PXc',
   });
+  const axios = useAxios();
+  const dispatch = useDispatch();
 
   const [map, setMap] = useState(null);
-
   const onLoad = useCallback(function callback(map) {
     setMap(map);
   }, []);
-
   const onUnmount = useCallback(function callback(map) {
     setMap(null);
   }, []);
@@ -69,6 +72,13 @@ const Orders = ({ orders }: OrdersProps) => {
   } = useDisclosure();
 
   const btnRef = useRef<HTMLButtonElement>(null);
+  const createOrder = async () => {
+    const res = await axios.post('/orders/create_order/', {
+      dropOffLocation: 'RHOC2522',
+      timeStamp: ['2021-09-01 00:00:00', '2021-09-02 00:00:00'],
+    });
+    dispatch(ordersActions.addOrder(res.data.order));
+  };
   return (
     <>
       <Flex
@@ -111,18 +121,18 @@ const Orders = ({ orders }: OrdersProps) => {
           <TabPanel p="0">
             {orders.map((order, index) => (
               <OrderListItem
-                key={order.id}
+                key={order.orderId}
                 order={order}
                 isLast={index === orders.length - 1}
               />
             ))}
           </TabPanel>
-          <TabPanel p="0">
+          {/* <TabPanel p="0">
             {orders
               .filter((order) => order.status.toLowerCase() === 'assigned')
               .map((order, index) => (
                 <OrderListItem
-                  key={order.id}
+                  key={order.orderId}
                   order={order}
                   isLast={index === orders.length - 1}
                 />
@@ -133,12 +143,12 @@ const Orders = ({ orders }: OrdersProps) => {
               .filter((order) => order.status.toLowerCase() === 'unassigned')
               .map((order, index) => (
                 <OrderListItem
-                  key={order.id}
+                  key={order.orderId}
                   order={order}
                   isLast={index === orders.length - 1}
                 />
               ))}
-          </TabPanel>
+          </TabPanel> */}
         </TabPanels>
       </Tabs>
       <Drawer
@@ -223,7 +233,9 @@ const Orders = ({ orders }: OrdersProps) => {
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="blue">Save</Button>
+            <Button colorScheme="blue" onClick={createOrder}>
+              Save
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>

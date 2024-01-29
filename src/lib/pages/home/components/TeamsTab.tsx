@@ -23,16 +23,25 @@ import {
 import { useRef, useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 
+import useAxios from '~/utils/useAxios';
+
 const TeamsTab = () => {
+  const axios = useAxios();
   const [driver, setDriver] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement>(null);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDriver(e.target.value);
   };
-  const handleSaveDriver = () => {
-    console.log(driver);
-    onClose();
+  const handleSaveDriver = async () => {
+    try {
+      const { data } = await axios.post('/drivers', { name: driver });
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      onClose();
+    }
   };
   return (
     <>

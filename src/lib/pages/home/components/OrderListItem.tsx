@@ -16,7 +16,7 @@ function OrderListItem({ order, isLast }: OrderProps) {
   };
   return (
     <Box
-      key={order.id}
+      key={order.orderId}
       w="100%"
       px={3}
       py={1}
@@ -32,23 +32,16 @@ function OrderListItem({ order, isLast }: OrderProps) {
       onClick={() =>
         handleMarkerClick({
           latLng: {
-            lat: +order.dropoffLocation.split(',')[0] as number,
-            lng: +order.dropoffLocation.split(',')[1] as number,
+            lat: +order.latitude as number,
+            lng: +order.longitude as number,
           },
         } as any)
       }
     >
       <Flex justify="space-between" align="start">
         <Text fontWeight="bold" fontSize="sm">
-          {order.name}
+          {order.shortAddress}
         </Text>
-        <Icon
-          as={FaMapMarker}
-          mt="1"
-          color={
-            order.status.toLowerCase() === 'assigned' ? 'green.600' : 'red.600'
-          }
-        />
       </Flex>
       <Text fontSize="xs" color="gray.500">
         10:00 AM - 11:00 AM
