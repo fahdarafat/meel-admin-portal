@@ -24,6 +24,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const { access_token, refresh_token } = response.data;
       setAuthTokens({ token: access_token, refreshToken: refresh_token });
       setUser(userDetails as UserDetails);
+      navigate('/');
     } catch (error) {
       console.log(error);
     }

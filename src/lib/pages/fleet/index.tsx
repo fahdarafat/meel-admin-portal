@@ -9,9 +9,8 @@ import {
   Tr,
   Th,
   Td,
-  Tfoot,
   Tbody,
-  Container,
+  Flex,
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
@@ -21,45 +20,57 @@ const fleet = () => {
     console.log('clicked');
   };
   return fleetDetails.length > 0 ? (
-    <TableContainer height="100%">
-      <Table variant="simple">
-        <Thead>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          <Tr
-            _hover={{ background: '#e5e5e5' }}
-            cursor="pointer"
-            onClick={handleClick}
-          >
-            <Td>inches</Td>
-            <Td>millimetres (mm)</Td>
-            <Td isNumeric>25.4</Td>
-          </Tr>
-          <Tr>
-            <Td>feet</Td>
-            <Td>centimetres (cm)</Td>
-            <Td isNumeric>30.48</Td>
-          </Tr>
-          <Tr>
-            <Td>yards</Td>
-            <Td>metres (m)</Td>
-            <Td isNumeric>0.91444</Td>
-          </Tr>
-        </Tbody>
-        <Tfoot>
-          <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
-          </Tr>
-        </Tfoot>
-      </Table>
-    </TableContainer>
+    <>
+      <Flex>
+        <Button colorScheme="blue" ms="auto" me="3">
+          Add
+        </Button>
+      </Flex>
+      <TableContainer height="100%">
+        <Table size="md">
+          <Thead>
+            <Tr>
+              <Th>Name</Th>
+              <Th>info</Th>
+              <Th isNumeric>multiply by</Th>
+              <Th isNumeric>Actions</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            <Tr
+              _hover={{ background: '#e5e5e5' }}
+              cursor="pointer"
+              onClick={handleClick}
+            >
+              <Td>inches</Td>
+              <Td>millimeters (mm)</Td>
+              <Td isNumeric>25.4</Td>
+              <Td>
+                <Button colorScheme="blue">Edit</Button>
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>feet</Td>
+              <Td>centimeters (cm)</Td>
+              <Td isNumeric>30.48</Td>
+              <Td>
+                <Button colorScheme="blue">Edit</Button>
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>yards</Td>
+              <Td>metres (m)</Td>
+              <Td isNumeric>0.91444</Td>
+              <Td>
+                <Button colorScheme="blue" textAlign="end">
+                  Edit
+                </Button>
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   ) : (
     <Center>
       <VStack>
