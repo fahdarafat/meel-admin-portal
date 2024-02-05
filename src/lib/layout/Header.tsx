@@ -10,7 +10,9 @@ import {
   MenuList,
   MenuItem,
   Avatar,
+  Icon,
 } from '@chakra-ui/react';
+import { IoIosSettings, IoIosLogOut } from 'react-icons/io';
 import { NavLink } from 'react-router-dom';
 
 import { useAuth } from '~/lib/Contexts/AuthContext';
@@ -20,9 +22,9 @@ import { useAuth } from '~/lib/Contexts/AuthContext';
 const Header = () => {
   const auth = useAuth();
   const pages = [
-    { name: 'Home', path: '/', exact: true },
-    { name: 'Fleet', path: '/fleet', exact: true },
-    { name: 'Planning', path: '/planning', exact: true },
+    { name: 'Control Tower', path: '/', exact: true },
+    { name: 'Plan', path: '/fleet', exact: true },
+    { name: 'Execute', path: '/planning', exact: true },
   ];
   return (
     <Flex
@@ -64,7 +66,17 @@ const Header = () => {
               <Avatar name={auth.user?.email} size="sm" />
             </MenuButton>
             <MenuList>
-              <MenuItem onClick={() => auth.logout()}>Logout</MenuItem>
+              <MenuItem
+                onClick={() => auth.logout()}
+                justifyContent="space-between"
+              >
+                Logout
+                <IoIosLogOut />
+              </MenuItem>
+              <MenuItem justifyContent="space-between">
+                Settings
+                <IoIosSettings />
+              </MenuItem>
             </MenuList>
           </Menu>
         </Box>

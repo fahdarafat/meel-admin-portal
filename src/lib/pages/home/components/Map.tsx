@@ -22,11 +22,11 @@ const center = {
 
 function Map({
   orders,
-  routes,
+  optimizedRoutes,
   children,
 }: {
   orders: Order[];
-  routes: OptimizedRoute[];
+  optimizedRoutes: OptimizedRoute[];
   children?: ReactNode;
 }) {
   const { isLoaded } = useJsApiLoader({
@@ -39,7 +39,7 @@ function Map({
     console.log(map);
   }, []);
 
-  const decodedGeometry = routes[0].result.routes.map((route: Route) =>
+  const decodedGeometry = optimizedRoutes[0].result.routes.map((route: Route) =>
     decode(route.geometry)
   );
   return isLoaded ? (
@@ -97,21 +97,23 @@ function Map({
           </Card>
         </InfoWindow>
       )}
-      {routes &&
-        decodedGeometry.map((decoded) => (
-          <Polyline
-            key={decoded[0][0]}
-            path={decoded.map((point) => ({
-              lat: point[0],
-              lng: point[1],
-            }))}
-            options={{
-              strokeColor: '#FF0000',
-              strokeOpacity: 1,
-              strokeWeight: 4,
-            }}
-          />
-        ))}
+      {optimizedRoutes &&
+        optimizedRoutes.map((optimizedRoute) =>
+          optimizedRoute.result.routes.map((route) => (
+            <Polyline
+              key={route.geometry}
+              path={decode(route.geometry).map((point) => ({
+                lat: point[0],
+                lng: point[1],
+              }))}
+              options={{
+                strokeColor: '#FF0000',
+                strokeOpacity: 1,
+                strokeWeight: 4,
+              }}
+            />
+          ))
+        )}
       {children}
     </GoogleMap>
   ) : null;

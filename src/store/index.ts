@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
+import driversReducer from './drivers';
 import ordersReducer from './orders';
 import routesReducer from './route-optimization';
 
@@ -10,11 +11,15 @@ export type RootState = {
   routes: {
     routes: OptimizedRoute[];
   };
+  drivers: {
+    drivers: Driver[];
+  };
 };
 const store = configureStore({
   reducer: {
     orders: ordersReducer,
     routes: routesReducer,
+    drivers: driversReducer,
   },
 });
 

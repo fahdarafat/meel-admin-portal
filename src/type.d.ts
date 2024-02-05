@@ -8,6 +8,11 @@ type Order = {
   longitude: string;
 };
 
+type Driver = {
+  driverId: number;
+  driverName: string;
+};
+
 type OptimizedRoute = {
   description: string;
   result: {

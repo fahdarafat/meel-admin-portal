@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { ResizableBox } from 'react-resizable';
 
 import type { RootState } from '../../../store/index'; // Import RootState and OptimizedRoute from the appropriate location
+import { driverActions } from '~/store/drivers';
 import { ordersActions } from '~/store/orders';
 import useAxios from '~/utils/useAxios';
 
@@ -22,9 +23,13 @@ const Home = () => {
     axios.get('/orders/get_all_orders').then((res) => {
       dispatch(ordersActions.setOrders(res.data));
     });
+    axios.get('drivers/get_all_drivers').then((res) => {
+      dispatch(driverActions.setDrivers(res.data));
+    });
   }, []);
   const orders = useSelector((state: RootState) => state.orders.orders);
   const routes = useSelector((state: RootState) => state.routes.routes);
+  const drivers = useSelector((state: RootState) => state.drivers.drivers);
 
   return (
     <Box
@@ -32,7 +37,7 @@ const Home = () => {
       overflow="hidden"
       height={`calc(100vh - ${headerHeight}px)`}
     >
-      <Map orders={orders} routes={routes}>
+      <Map orders={orders} optimizedRoutes={routes}>
         <Flex justify="space-between" height="100%">
           <ResizableBox
             width={leftDrawerWidth}
@@ -53,7 +58,7 @@ const Home = () => {
             minConstraints={[300, Infinity]}
           >
             <Box bg="white" height="100%">
-              <TeamsTab />
+              <TeamsTab drivers={drivers} />
             </Box>
           </ResizableBox>
         </Flex>

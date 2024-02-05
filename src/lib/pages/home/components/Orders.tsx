@@ -34,7 +34,7 @@ import { FaPlus } from 'react-icons/fa';
 import { FaLocationDot } from 'react-icons/fa6';
 import { useDispatch } from 'react-redux';
 
-import CustomDateTimePicker from '../../../components/DateTimePicker';
+import DatePicker from '~/lib/components/DatePicker';
 import { ordersActions } from '~/store/orders';
 import useAxios from '~/utils/useAxios';
 
@@ -56,8 +56,40 @@ const Orders = ({ orders }: OrdersProps) => {
   });
   const axios = useAxios();
   const dispatch = useDispatch();
+  const formatDate = (dateString: string): string => {
+    // Create a new Date object from the input string
+    const date = new Date(dateString);
+
+    // Define a helper function to pad single-digit numbers with a leading zero
+    const pad = (num: number): string =>
+      num < 10 ? `0${num}` : num.toString();
+
+    // Format the date and time in the desired format
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+      date.getDate()
+    )} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(
+      date.getSeconds()
+    )}`;
+  };
 
   const [map, setMap] = useState(null);
+  const [newOrder, setNewOrder] = useState({
+    shortAddress: '',
+    timeWindow: ['2021-09-01 00:00:00', ''],
+  });
+
+  const handleShortAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewOrder({ ...newOrder, shortAddress: e.target.value.toUpperCase() });
+  };
+  const onSelectDate = (date: Date | undefined) => {
+    if (date) {
+      setNewOrder({
+        ...newOrder,
+        timeWindow: ['2021-09-01 00:00:00', formatDate(date.toISOString())],
+      });
+    }
+  };
+
   const onLoad = useCallback(function callback(map) {
     setMap(map);
   }, []);
@@ -74,10 +106,11 @@ const Orders = ({ orders }: OrdersProps) => {
   const btnRef = useRef<HTMLButtonElement>(null);
   const createOrder = async () => {
     const res = await axios.post('/orders/create_order/', {
-      dropOffLocation: 'RHOC2522',
-      timeStamp: ['2021-09-01 00:00:00', '2021-09-02 00:00:00'],
+      dropOffLocation: newOrder.shortAddress,
+      timeStamp: newOrder.timeWindow,
     });
     dispatch(ordersActions.addOrder(res.data.order));
+    onClose();
   };
   return (
     <>
@@ -163,23 +196,15 @@ const Orders = ({ orders }: OrdersProps) => {
           <DrawerHeader>Create New Order</DrawerHeader>
 
           <DrawerBody>
-            <FormControl isRequired>
-              <FormLabel>First name</FormLabel>
-              <Input placeholder="First name" size="sm" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Email</FormLabel>
-              <Input placeholder="First name" size="sm" />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Time Window</FormLabel>
-              <Input placeholder="First name" size="sm" />
-              <CustomDateTimePicker />
-            </FormControl>
             <HStack align="end">
               <FormControl isRequired>
                 <FormLabel>Short Address</FormLabel>
-                <Input placeholder="First name" size="sm" />
+                <Input
+                  placeholder="First name"
+                  size="sm"
+                  onChange={handleShortAddressChange}
+                  value={newOrder.shortAddress}
+                />
               </FormControl>
               <IconButton
                 size="sm"
@@ -189,6 +214,7 @@ const Orders = ({ orders }: OrdersProps) => {
                 onClick={openModal}
               />
             </HStack>
+            <DatePicker onSelect={(date) => onSelectDate(date)} />
             <Modal isOpen={isModalOpen} onClose={closeModal}>
               <ModalOverlay />
               <ModalContent>

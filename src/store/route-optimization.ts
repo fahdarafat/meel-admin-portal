@@ -212,14 +212,21 @@ const routesSlice = createSlice({
   initialState,
   reducers: {
     setRoutes(state, action) {
-      state.routes = action.payload;
+      return {
+        ...state,
+        routes: action.payload,
+      };
     },
-    addOrder(state, action) {
-      state.routes.push(action.payload);
+    addRoute(state, action) {
+      console.log('addRoute', state, action);
+      return {
+        ...state,
+        routes: [...state.routes, action.payload],
+      };
     },
   },
 });
 
-export const ordersActions = routesSlice.actions;
+export const routesActions = routesSlice.actions;
 
 export default routesSlice.reducer;

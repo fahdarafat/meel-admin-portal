@@ -25,20 +25,25 @@ import { FaPlus } from 'react-icons/fa';
 
 import useAxios from '~/utils/useAxios';
 
-const TeamsTab = () => {
+import DriverlistItem from './DriverListItem';
+
+type TeamsTabProps = {
+  drivers: Driver[];
+};
+
+const TeamsTab = ({ drivers }: TeamsTabProps) => {
   const axios = useAxios();
-  const [driver, setDriver] = useState('');
+  const [newDriver, setNewDriver] = useState('');
   const { isOpen, onOpen, onClose } = useDisclosure();
   const btnRef = useRef<HTMLButtonElement>(null);
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDriver(e.target.value);
+    setNewDriver(e.target.value);
   };
   const handleSaveDriver = async () => {
     try {
-      const { data } = await axios.post('/drivers', { name: driver });
-      console.log(data);
-    } catch (error) {
-      console.log(error);
+      await axios.post('drivers/add_driver/', {
+        driver_name: newDriver,
+      });
     } finally {
       onClose();
     }
@@ -77,7 +82,9 @@ const TeamsTab = () => {
 
         <TabPanels>
           <TabPanel>
-            <p>Drivers</p>
+            {drivers.map((driver: Driver) => (
+              <DriverlistItem key={driver.driverId} driver={driver} />
+            ))}
           </TabPanel>
           <TabPanel>
             <p>Teams</p>

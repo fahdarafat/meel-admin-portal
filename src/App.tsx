@@ -5,6 +5,7 @@ import { AuthProvider } from '~/lib/Contexts/AuthContext';
 import Layout from '~/lib/layout';
 import Routings from '~/lib/router/Routings';
 import { theme } from '~/lib/styles/theme';
+import '~/lib/styles/app.css';
 
 const App = () => (
   <ChakraProvider theme={theme}>

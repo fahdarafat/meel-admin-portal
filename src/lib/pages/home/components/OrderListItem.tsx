@@ -1,6 +1,5 @@
-import { Box, Flex, Text, Icon } from '@chakra-ui/react';
+import { Box, Flex, Text } from '@chakra-ui/react';
 import { useGoogleMap } from '@react-google-maps/api';
-import { FaMapMarker } from 'react-icons/fa';
 
 type OrderProps = {
   order: Order;
